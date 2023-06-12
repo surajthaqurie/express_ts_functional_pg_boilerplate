@@ -27,6 +27,9 @@ try {
   });
 
   appRoute(app);
+
+  // todo: not found route
+  // todo: error handling
 } catch (err) {
   console.log("error", err);
   process.exit(0);

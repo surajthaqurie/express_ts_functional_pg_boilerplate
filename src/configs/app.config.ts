@@ -3,5 +3,6 @@ import { dotEnv as env } from "src/utils";
 export const appConfig = {
   PORT: env.PORT,
   APP_URL: env.APP_URL,
-  NODE_ENV: env.NODE_ENV
+  NODE_ENV: env.NODE_ENV,
+  APP_NAME: env.APP_NAME
 };

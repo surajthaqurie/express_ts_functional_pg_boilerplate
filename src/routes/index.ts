@@ -5,3 +5,5 @@ const appRoute = (router: Application): void => {
 };
 
 export default appRoute;
+
+// todo: separate app user role routes

@@ -2,5 +2,6 @@
  * All environment variables
  */
 
-export * from "./app.config";
-export * from "./db.config";
+import { default as env } from "./app.config";
+
+export { env };

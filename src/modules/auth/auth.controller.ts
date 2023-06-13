@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { signupValidation } from "./auth.validation";
-import { AuthService } from "./auth.service";
+import authService from "./auth.service";
 
-export class AuthController {
-  constructor(private authService: AuthService) {}
-
+class AuthController {
   async signup(req: Request, res: Response, next: NextFunction): Promise<any> {
     const { error, value } = signupValidation(req.body);
     if (error) {
@@ -13,7 +11,7 @@ export class AuthController {
         error: error.details[0].message
       });
     }
-    const user = this.authService.signup(value);
+    const user = authService.signup(value);
 
     return res.json({
       success: true,
@@ -21,3 +19,6 @@ export class AuthController {
     });
   }
 }
+
+const authController = new AuthController();
+export default authController;

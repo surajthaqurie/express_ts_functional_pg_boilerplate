@@ -1,9 +1,8 @@
-import { Application } from "express";
+import { Router } from "express";
+import authRouter from "../modules/auth/auth.route";
 
-const appRoute = (router: Application): void => {
-  //   app.use("");
-};
+const router = Router();
 
-export default appRoute;
+router.use("/auth", authRouter);
 
-// todo: separate app user role routes
+export default router;

@@ -3,8 +3,7 @@ import { IAuthSignup } from "src/common/interfaces";
 import { Users } from "src/helpers";
 import { AppError } from "src/utils";
 
-export class AuthService {
-  constructor() {}
+class AuthService {
   async signup(value: IAuthSignup): Promise<any> {
     let query: { [key: string]: string } = { email: value.email };
     let userExits = await this.findUserByUnique(query);
@@ -31,3 +30,6 @@ export class AuthService {
     await Users.findUnique({ where: query });
   }
 }
+
+const authService = new AuthService();
+export default authService;

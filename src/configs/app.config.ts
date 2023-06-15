@@ -1,4 +1,4 @@
-import { dotEnv as env } from "src/utils";
+import { dotEnv as env } from "src/common/utils";
 
 export default {
   appConfig: {

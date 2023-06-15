@@ -5,6 +5,7 @@ import helmet from "helmet";
 import path from "path";
 
 import indexRouter from "./src/routes";
+// import { errorHandler } from "src/middlewares";
 
 class App {
   public app: express.Application;
@@ -25,6 +26,9 @@ class App {
 
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: false }));
+    // this.app.use((err: any, req: any, res: any, next: any) => {
+    //   console.log("----------------->", err);
+    // });
   }
 
   private configureRoute(): void {
@@ -33,4 +37,7 @@ class App {
 }
 
 const app = new App().app;
+app.use((err: any, req: any, res: any, next: any) => {
+  console.log("----------------->", err);
+});
 export default app;

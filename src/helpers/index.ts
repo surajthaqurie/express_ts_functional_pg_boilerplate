@@ -3,3 +3,4 @@
  */
 
 export * from "./dbConnection.helper";
+export * from "./catchAsyncHandler";

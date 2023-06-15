@@ -22,6 +22,3 @@ class AuthController {
 
 const authController = new AuthController();
 export default authController;
-// export const authController_ = {
-//   signup: catchAsyncHandler(authController.signup)
-// };

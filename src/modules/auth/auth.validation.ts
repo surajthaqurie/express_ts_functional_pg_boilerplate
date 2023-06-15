@@ -9,10 +9,10 @@ export const signupValidation = (data: IAuthSignup): Joi.ValidationResult<IAuthS
     phone: Joi.string().trim().required(),
     email: Joi.string().lowercase().email().trim().required(),
     password: Joi.string()
-      .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
+      // .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
       .trim()
       .required(),
-    confirmPassword: Joi.string().trim().required()
+    confirmPassword: Joi.string().trim().required().optional()
   });
 
   return schema.validate(data);

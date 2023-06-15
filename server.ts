@@ -16,6 +16,10 @@ class CreateServer {
       console.log(`Server is starting on ${env.appConfig.APP_URL} at ${new Date()} with process id:`, process.pid);
     });
   }
+
+  public close(): void {
+    process.exit(0);
+  }
 }
 
 const PORT: number = Number(env.appConfig.PORT) || 8848;
@@ -23,9 +27,7 @@ const server = new CreateServer(PORT).server;
 
 process.on("SIGTERM", (): void => {
   console.log("Server is closing at ", new Date());
-  server.close((): void => {
-    process.exit(0);
-  });
+  server.close();
 });
 
 export default server;

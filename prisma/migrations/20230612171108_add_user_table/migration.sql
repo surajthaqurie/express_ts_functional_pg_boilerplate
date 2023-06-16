@@ -12,6 +12,7 @@ CREATE TABLE "Users" (
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "avatar" TEXT,
+    "status" BOOLEAN NOT NULL DEFAULT false,
     "deleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,

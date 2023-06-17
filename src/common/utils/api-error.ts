@@ -10,9 +10,9 @@ export abstract class ApiError extends Error {
   public static handleError(err: ApiError, res: Response): any {
     switch (err.type) {
       case ErrorType.CONFLICT_REQUEST:
-        return new ConflictResponse(err.message).send(res);
+        return new ConflictResponse(err.message).sendResponse(res);
       case ErrorType.BAD_REQUEST:
-        return new BadRequestResponse(err.message).send(res);
+        return new BadRequestResponse(err.message).sendResponse(res);
     }
   }
 }
@@ -28,17 +28,3 @@ export class BadRequestError extends ApiError {
     super(ErrorType.BAD_REQUEST, message);
   }
 }
-
-// statusCode: number;
-// success: boolean;
-// isOperational: boolean;
-
-// constructor(message: string, statusCode: number) {
-//   super(message);
-//   this.message = message;
-//   this.statusCode = statusCode || 500;
-//   this.success = false;
-//   this.isOperational = true;
-
-//   Error.captureStackTrace(this, this.constructor);
-// }

@@ -1,4 +1,5 @@
-const sanitizeFields = (fields: any, keys: string[]) => {
+// @ts-ignore
+export const sanitizeFields = (fields: any, keys: string[]) => {
   if (Array.isArray(fields)) {
     for (let i = 0; i < fields.length; i++) {
       for (let key of keys) {
@@ -12,5 +13,3 @@ const sanitizeFields = (fields: any, keys: string[]) => {
   }
   return fields;
 };
-
-export { sanitizeFields };

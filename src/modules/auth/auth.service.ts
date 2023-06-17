@@ -1,6 +1,6 @@
 import { AUTH_MESSAGE_CONSTANT } from "src/common/constants";
 import { IUser, IAuthSignupPayload } from "src/common/interfaces";
-import { BadRequestError, ConflictRequestError } from "src/common/utils";
+import { BadRequestError, ConflictRequestError, sanitizeFields } from "src/common/utils";
 import { Users } from "src/helpers";
 import { signupValidation } from "./auth.validation";
 
@@ -9,6 +9,10 @@ class AuthService {
     const { error, value } = signupValidation(reqBody);
     if (error) {
       throw new BadRequestError(error.details[0].message);
+    }
+
+    if (value.password !== value.confirmPassword) {
+      throw new BadRequestError(AUTH_MESSAGE_CONSTANT.PASSWORD_AND_CONFIRM_PASSWORD_NOT_MATCHED);
     }
 
     let query: { [key: string]: string } = { email: value.email };
@@ -29,8 +33,12 @@ class AuthService {
       throw new ConflictRequestError(AUTH_MESSAGE_CONSTANT.USERNAME_ALREADY_TAKEN);
     }
 
-    delete value.confirmPassword;
-    const user = await Users.create({ data: value });
+    const sanitizeUser = sanitizeFields(value, ["confirmPassword"]);
+    const user = await Users.create({ data: sanitizeUser });
+    if (!user) {
+      throw new BadRequestError(AUTH_MESSAGE_CONSTANT.UNABLE_TO_CREATE_USER);
+    }
+
     return user;
   }
 

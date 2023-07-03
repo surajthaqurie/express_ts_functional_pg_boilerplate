@@ -35,22 +35,22 @@ export class BadRequestResponse extends ApiResponse {
   }
 }
 
-export class SuccessResponse<T> {
-  status: number;
-  message: string;
-  response: T;
-
-  constructor(status: number, message: string, response: T) {
-    this.response = response;
-    this.message = message;
-    this.status = status;
+export class SuccessResponse<T> extends ApiResponse {
+  constructor(message: string, protected data: T) {
+    super(HttpStatus.SUCCESS, true, message);
   }
 
-  public sendResponse(res: Response) {
-    return res.status(this.status).json({
-      success: true,
-      message: this.message,
-      data: this.response
-    });
+  override sendResponse(res: Response, headers: { [key: string]: string } = {}): Response {
+    return super.prepareResponse<SuccessResponse<T>>(res, this, headers);
+  }
+}
+
+export class SuccessCreatedResponse<T> extends ApiResponse {
+  constructor(message: string, protected data: T) {
+    super(HttpStatus.CREATED, true, message);
+  }
+
+  override sendResponse(res: Response, headers: { [key: string]: string } = {}): Response {
+    return super.prepareResponse<SuccessCreatedResponse<T>>(res, this, headers);
   }
 }

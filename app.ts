@@ -1,42 +1,38 @@
-import express from "express";
+import express, { NextFunction, Request, Response, Router } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import helmet from "helmet";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
 
-import indexRouter from "src/routes";
 import { errorHandler } from "src/middlewares";
 import swaggerDefinitions from "swagger.definitions";
+import routes from "src/routes";
 
-class App {
-  public app: express.Application;
+const app = express();
+const router: Router = express.Router();
 
-  constructor() {
-    this.app = express();
-    this.configureMiddlewares();
-    this.configureRoute();
-  }
+app.use(cors());
+app.use(morgan("dev"));
+app.set("rateLimit", 100);
 
-  private configureMiddlewares(): void {
-    this.app.use(cors());
-    this.app.use(morgan("dev"));
-    this.app.set("rateLimit", 100);
+app.use(helmet());
+app.use("/public", express.static(path.join(__dirname, "public")));
 
-    this.app.use(helmet());
-    this.app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: false }));
 
-    this.app.use(express.json({ limit: "10mb" }));
-    this.app.use(express.urlencoded({ extended: false }));
-  }
+routes(router);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinitions.server));
 
-  private configureRoute(): void {
-    this.app.use("/api/v1", indexRouter);
-    this.app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinitions.server));
-  }
-}
+app.use(
+  "/api/v1",
+  (req: Request, res: Response, next: NextFunction): void => {
+    next();
+  },
+  router
+);
 
-const app = new App().app;
 app.use(errorHandler);
 
 export default app;

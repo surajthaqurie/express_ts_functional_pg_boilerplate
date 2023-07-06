@@ -1,8 +1,7 @@
 import { Router } from "express";
+
 import authRouter from "../modules/auth/auth.route";
 
-const router = Router();
-
-router.use("/auth", authRouter);
-
-export default router;
+export default (router: Router, isAuth = false): void => {
+  authRouter(router, isAuth);
+};

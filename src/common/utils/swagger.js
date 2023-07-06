@@ -49,18 +49,15 @@ const doc = {
       success: true,
       message: "User created Successfully.",
       data: {
-        id: "84012b1e-900b-4ff7-bcff-d1dad341abdf",
-        firstName: "Suraj",
-        lastName: "thaqurie",
+        id: "503d70ff-eb15-4bce-b054-a8b676114cee",
+        firstName: "suraj",
+        lastName: "chand",
+        email: "devlop143@gmail.com",
         username: "suraj12",
         phone: "0000000000",
-        status: false,
-        role: "USER",
         avatar: null,
-        deleted: false,
-        createdAt: "2023-06-18T17:35:47.699Z",
-        updatedAt: "2023-06-18T17:35:47.699Z",
-        deletedAt: false
+        createdAt: "2023-07-06T18:23:35.255Z",
+        updatedAt: "2023-07-06T18:23:35.255Z"
       }
     }
   }

@@ -15,6 +15,7 @@ class CreateServer {
     this.port = port;
     this.server.listen(this.port, (): void => {
       console.log(`Server is starting on ${env.appConfig.APP_URL} at ${new Date()} with process id:`, process.pid);
+      console.log(`Swagger API docs is  started on ${process.env.APP_URL}/api-docs`);
     });
   }
 }

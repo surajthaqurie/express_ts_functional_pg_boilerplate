@@ -17,10 +17,6 @@ class CreateServer {
       console.log(`Server is starting on ${env.appConfig.APP_URL} at ${new Date()} with process id:`, process.pid);
     });
   }
-
-  public close(): void {
-    process.exit(0);
-  }
 }
 
 const PORT: number = Number(env.appConfig.PORT) || 8848;

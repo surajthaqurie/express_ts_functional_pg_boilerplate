@@ -1,70 +1,45 @@
 import { Prisma } from "@prisma/client";
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { ApiError } from "src/common/utils";
 
-// const sendErrorToDev = function (error: any, res: Response): any {
-//   return res.status(error.statusCode).json({
-//     success: error.success,
-//     error,
-//     message: error.message,
-//     stack: error.stack
-//   });
-// };
+import { ApiError, BadRequestResponse, InternalError } from "src/common/utils";
+import { env } from "src/configs";
+import { API_ERROR_MESSAGE_CONSTANT } from "src/common/constants";
 
-// const sendErrorToProd = function (error: any, res: Response): any {
-//   if (error instanceof Prisma.PrismaClientValidationError) {
-//     console.log(error.message);
-//   } else {
-//     return res.status(error.statusCode).json({
-//       success: error.success !== undefined ? error.success : false,
-//       message: error.message
-//     });
-//   }
-// };
+export const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Response, next: NextFunction): Response => {
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    switch (err.code) {
+      case "P2002":
+        let name = err.meta && err.meta.target;
+        let message = `This ${name} already exists. Please choose different ${name}`;
+        return new BadRequestResponse(message).sendResponse(res);
+      case "P2014":
+        name = err.meta && err.meta.target;
+        message = `Invalid ID: ${name}`;
+        return new BadRequestResponse(message).sendResponse(res);
+      case "P2006":
+        name = err.meta && err.meta.target;
+        message = `The provide value for ${name} is invalid`;
+        return new BadRequestResponse(message).sendResponse(res);
+    }
+  }
 
-export const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Response, next: NextFunction): any => {
-  console.log("----------------", err instanceof ApiError);
-  console.log("----------------", err instanceof Prisma.PrismaClientValidationError);
-  console.log("----------------", err instanceof Prisma.PrismaClientKnownRequestError);
-  console.log("----------------", err instanceof Prisma.PrismaClientUnknownRequestError);
+  if (err instanceof Prisma.PrismaClientValidationError) {
+    if (env.appConfig.NODE_ENV === "production") {
+      // Todo: add logger when production the err.message
+    }
+
+    // auto detect process.env.NODE_ENV production or development
+    return new BadRequestResponse(err.message).sendResponse(res);
+  }
 
   if (err instanceof ApiError) {
     return ApiError.handleError(err, res);
   }
-  // let prismaClientValidationError = err instanceof Prisma.PrismaClientValidationError;
 
-  // let prismaClientKnownRequestError = err instanceof Prisma.PrismaClientKnownRequestError;
-
-  if (err instanceof Prisma.PrismaClientValidationError) {
-    // if (err.code === "P2002") {
-    //   let name = err.meta.target[0];
-    //   return res.status(400).json({
-    //     success: false,
-    //     message: `This ${name} already exists. Please choose different ${name}`
-    //   });
-    // }
-
-    return res.send("prisma error");
+  if (env.appConfig.NODE_ENV === "production") {
+    // Todo: add logger when production the err.message
+    return ApiError.handleError(new InternalError(API_ERROR_MESSAGE_CONSTANT.INTERNAL_SERVER_ERROR), res);
   }
 
-  // if (!prismaClientValidationError) {
-  //   if (process.env.NODE_ENV === "development") {
-  //     sendErrorToDev(err, res);
-  //   } else if (process.env.NODE_ENV === "production") {
-  //     let error = { ...err };
-  //     error.message = err.message;
-  //     sendErrorToProd(error, res);
-  //   }
-  // } else {
-  //   return res.status(err.statusCode).json({
-  //     success: false,
-  //     message: err.message
-  //   });
-  // }
-
-  console.log(err);
-  // return res.status(400).json({
-  //   success: false,
-  //   message: err.message
-  // });
+  return ApiError.handleError(new InternalError(err.message), res);
 };

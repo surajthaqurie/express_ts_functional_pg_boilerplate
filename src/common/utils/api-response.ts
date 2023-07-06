@@ -35,6 +35,12 @@ export class BadRequestResponse extends ApiResponse {
   }
 }
 
+export class InternalErrorResponse extends ApiResponse {
+  constructor(message: string) {
+    super(HttpStatus.INTERNAL_ERROR, false, message);
+  }
+}
+
 export class SuccessResponse<T> extends ApiResponse {
   constructor(message: string, protected data: T) {
     super(HttpStatus.SUCCESS, true, message);

@@ -43,7 +43,7 @@ class AuthService {
   }
 
   private async findUserByUnique(query: { [key: string]: string }): Promise<IUser | null> {
-    return await Users.findUnique({ where: query });
+    return Users.findUnique({ where: query });
   }
 }
 

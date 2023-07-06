@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+
 import authService from "./auth.service";
 import { SuccessCreatedResponse } from "src/common/utils";
 import { AUTH_MESSAGE_CONSTANT } from "src/common/constants";

@@ -3,3 +3,4 @@
  */
 
 export * from "./authMessage.constant";
+export * from "./apiErrorMessage.constant";

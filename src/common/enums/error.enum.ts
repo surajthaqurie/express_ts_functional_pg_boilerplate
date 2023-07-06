@@ -9,5 +9,6 @@ export enum ErrorType {
   NO_DATA = "NoDataError",
   BAD_REQUEST = "BadRequestError",
   FORBIDDEN = "ForbiddenError",
-  CONFLICT_REQUEST = "ConflictRequestError"
+  CONFLICT_REQUEST = "ConflictRequestError",
+  PRISMA_CLIENT_KNOWN_REQUEST_ERROR = "PrismaClientKnownRequestError"
 }

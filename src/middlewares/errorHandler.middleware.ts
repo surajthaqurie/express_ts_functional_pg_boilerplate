@@ -10,15 +10,15 @@ export const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res:
     switch (err.code) {
       case "P2002":
         let name = err.meta && err.meta.target;
-        let message = `This ${name} was already taken. Please choose different ${name}`;
+        let message = `This ${name} was already taken. Please choose different ${name}.`;
         return new ConflictResponse(message).sendResponse(res);
       case "P2014":
         name = err.meta && err.meta.target;
-        message = `Invalid ID: ${name}`;
+        message = `Invalid ID: ${name}.`;
         return new BadRequestResponse(message).sendResponse(res);
       case "P2006":
         name = err.meta && err.meta.target;
-        message = `The provide value for ${name} is invalid`;
+        message = `The provide value for ${name} is invalid.`;
         return new BadRequestResponse(message).sendResponse(res);
       default:
         return ApiError.handleError(new InternalError(err.message), res);

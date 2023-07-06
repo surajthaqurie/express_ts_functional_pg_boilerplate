@@ -26,7 +26,7 @@ class App {
     this.app.use(helmet());
     this.app.use("/public", express.static(path.join(__dirname, "public")));
 
-    this.app.use(express.json());
+    this.app.use(express.json({ limit: "10mb" }));
     this.app.use(express.urlencoded({ extended: false }));
   }
 

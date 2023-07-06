@@ -1,11 +1,12 @@
 import { createServer, Server } from "http";
-import app from "app";
 import * as dotenv from "dotenv";
 import path from "path";
 
+import app from "app";
 import { env } from "src/configs";
 
 dotenv.config({ path: path.join(__dirname, ".env") });
+
 class CreateServer {
   public server: Server;
   private port: number;
@@ -15,10 +16,6 @@ class CreateServer {
     this.server.listen(this.port, (): void => {
       console.log(`Server is starting on ${env.appConfig.APP_URL} at ${new Date()} with process id:`, process.pid);
     });
-  }
-
-  public close(): void {
-    process.exit(0);
   }
 }
 

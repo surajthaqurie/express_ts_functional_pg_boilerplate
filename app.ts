@@ -4,7 +4,8 @@ import morgan from "morgan";
 import helmet from "helmet";
 import path from "path";
 
-import indexRouter from "./src/routes";
+import indexRouter from "src/routes";
+import { errorHandler } from "src/middlewares";
 
 class App {
   public app: express.Application;
@@ -33,4 +34,6 @@ class App {
 }
 
 const app = new App().app;
+app.use(errorHandler);
+
 export default app;

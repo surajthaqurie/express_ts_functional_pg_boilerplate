@@ -4,9 +4,9 @@ import morgan from "morgan";
 import helmet from "helmet";
 import path from "path";
 import swaggerUi from "swagger-ui-express";
+import swaggerFile from "./public/swagger_output.json";
 
 import { errorHandler } from "src/middlewares";
-import swaggerDefinitions from "swagger.definitions";
 import routes from "src/routes";
 
 const app = express();
@@ -23,7 +23,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: false }));
 
 routes(router);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDefinitions.server));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
 
 app.use(
   "/api/v1",

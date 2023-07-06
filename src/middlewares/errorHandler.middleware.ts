@@ -20,8 +20,12 @@ export const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res:
         name = err.meta && err.meta.target;
         message = `The provide value for ${name} is invalid`;
         return new BadRequestResponse(message).sendResponse(res);
+      default:
+        return ApiError.handleError(new InternalError(err.message), res);
     }
   }
+
+  if (err instanceof ApiError) return ApiError.handleError(err, res);
 
   if (err instanceof Prisma.PrismaClientValidationError) {
     if (env.appConfig.NODE_ENV === "production") {
@@ -32,14 +36,8 @@ export const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res:
     return new BadRequestResponse(err.message).sendResponse(res);
   }
 
-  if (err instanceof ApiError) {
-    return ApiError.handleError(err, res);
-  }
-
-  if (env.appConfig.NODE_ENV === "production") {
-    // Todo: add logger when production the err.message
-    return ApiError.handleError(new InternalError(API_ERROR_MESSAGE_CONSTANT.INTERNAL_SERVER_ERROR), res);
-  }
+  // Todo: add logger when production the err.message
+  if (env.appConfig.NODE_ENV === "production") return ApiError.handleError(new InternalError(API_ERROR_MESSAGE_CONSTANT.INTERNAL_SERVER_ERROR), res);
 
   return ApiError.handleError(new InternalError(err.message), res);
 };

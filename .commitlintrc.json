@@ -1,0 +1,4 @@
+{
+  "extends": ["@commitlint/config-conventional"],
+  "helpUrl": "\n - For improving commit skills, Please visit once: https://www.conventionalcommits.org/en/v1.0.0/ \n - For more information why this error occurred, Please visit: https://github.com/conventional-changelog/commitlint/#what-is-commitlint"
+}

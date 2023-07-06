@@ -1,9 +1,7 @@
-import express from "express";
+import { Router } from "express";
+
 import authController from "./auth.controller";
-import { catchAsyncHandler } from "src/helpers";
 
-const router = express.Router();
-
-router.route("/signup").post(catchAsyncHandler(authController.signup));
-
-export default router;
+export default (router: Router, isAuth: boolean): void => {
+  router.route("/auth/signup").post(authController.signup);
+};

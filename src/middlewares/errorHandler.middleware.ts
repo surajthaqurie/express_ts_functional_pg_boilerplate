@@ -1,17 +1,17 @@
 import { Prisma } from "@prisma/client";
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
 
-import { ApiError, BadRequestResponse, InternalError } from "src/common/utils";
-import { env } from "src/configs";
+import { ApiError, BadRequestResponse, ConflictResponse, InternalError } from "src/common/utils";
 import { API_ERROR_MESSAGE_CONSTANT } from "src/common/constants";
+import { env } from "src/configs";
 
 export const errorHandler: ErrorRequestHandler = (err: Error, req: Request, res: Response, next: NextFunction): Response => {
   if (err instanceof Prisma.PrismaClientKnownRequestError) {
     switch (err.code) {
       case "P2002":
         let name = err.meta && err.meta.target;
-        let message = `This ${name} already exists. Please choose different ${name}`;
-        return new BadRequestResponse(message).sendResponse(res);
+        let message = `This ${name} was already taken. Please choose different ${name}`;
+        return new ConflictResponse(message).sendResponse(res);
       case "P2014":
         name = err.meta && err.meta.target;
         message = `Invalid ID: ${name}`;

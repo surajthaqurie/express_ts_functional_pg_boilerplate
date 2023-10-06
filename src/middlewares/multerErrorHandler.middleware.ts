@@ -13,7 +13,7 @@ export const multerValidation = (location: string) => {
         //   });
 
         case "LIMIT_FILE_SIZE":
-          message = `Size of ${error.field} is too larger on ${location.toLowerCase()}`;
+          message = `Size of ${error.field} is too larger of ${location.toLowerCase()}`;
           return res.status(400).json({
             success: false,
             message
